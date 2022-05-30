@@ -1,19 +1,20 @@
 #include <stdio.h>
 #include "linkedlist.h"
 #include "textfilewriter.h"
+#include "node.h"
 void create_music_titles(FILE* stream){
-	//make linked list?
+	Node* node = NULL;
 	while(feof(stream) == 0){
 		char str[MAX_TITLE_SIZE];
-		fgets(str, MAX_TITLE_SIZE, fp);
+		fgets(str, MAX_TITLE_SIZE, fp);//get song titles from file
 		printf("%s", str);
-		add(str); //add song to linked list
+		node = insert_after(node, str);//create linkedlist
 	}
 }
 
 void read_file(char* file_name){
 	FILE *fp;
-	fp = fopen(*file_name, "r");
+	fp = fopen(*file_name, "r");//open file
 	if(fp == NULL){
 		printf("failed\n")
 	}
@@ -24,12 +25,11 @@ void read_file(char* file_name){
 void write_file(char* file_name){
 	FILE *fp = fopen(*file_name, "w");
 	int i = 0;
-	while(p != NULL){
-		fputs(p->song, fp);
-		p = p -> prev;
-		i++;
+	while(p != NULL){//p = external node
+		fputs(p->song, fp);//save a song title
+		p = p -> prev;//prev song title
+		i++;//number of song
 	}
-	char num = i + '0';
-	fputs(num, fp);
+	fprintf(fp, "%d\n", i);
 	fclose(fp);
 }
